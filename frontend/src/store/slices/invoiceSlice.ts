@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InvoiceType } from "../../types";
+import { notifyChange } from "../../app/middleware";
 
 interface InvoiceState {
   loading: boolean;
   items: InvoiceType[];
   error: string | null;
-  // editingId: string | null;
 }
 
 const initialState: InvoiceState = {
   loading: false,
   items: [],
   error: null,
-  // editingId: null,
 };
 
 const invoiceSlice = createSlice({
@@ -23,39 +22,39 @@ const invoiceSlice = createSlice({
     addInvoice: (state, action: PayloadAction<InvoiceType>) => {
       state.items.push(action.payload);
     },
-
-    // // Delete invoice
-    // deleteInvoice: (state, action: PayloadAction<string>) => {
-    //   state.invoices = state.invoices.filter(
-    //     (invoices: InvoiceType) => invoices.uniqueId !== action.payload
-    //   );
-    //   if (state.editingId === action.payload) {
-    //     state.editingId = null;
-    //   }
-    // },
-
-    // Set loading state
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+    updateInvoice: (
+      state,
+      action: PayloadAction<{
+        invoiceNumber: string;
+        changes: Partial<InvoiceType>;
+      }>
+    ) => {
+      const { invoiceNumber, changes } = action.payload;
+      const invoice = state.items.find(
+        (item) => item.invoiceNumber === invoiceNumber
+      );
+      if (invoice) {
+        Object.assign(invoice, changes);
+      }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(notifyChange, (state, action) => {
+      const { id, type, changes } = action.payload;
 
-    // Set error state
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
-    },
-
-    // Clear all invoices
-    clearInvoices: (state) => {
-      state.items = [];
-      state.error = null;
-      // state.editingId = null;
-    },
-    // Batch update invoices
-    setInvoices: (state, action: PayloadAction<InvoiceType[]>) => {
-      state.items = action.payload;
-    },
+      state.items.forEach((invoice) => {
+        if (type == "customer" && invoice.customer.customerId === id) {
+          invoice.customer = { ...invoice.customer, ...changes };
+        }
+        if (type === "product") {
+          invoice.products = invoice.products.map((product) =>
+            product.productId === id ? { ...product, ...changes } : product
+          );
+        }
+      });
+    });
   },
 });
 
-export const invoicesActions = invoiceSlice.actions;
+export const { updateInvoice, addInvoice } = invoiceSlice.actions;
 export const invoicesReducer = invoiceSlice.reducer;

@@ -7,8 +7,8 @@ import EditTable, { Column } from "./EditableTableRow";
 
 const columns: Column<CustomerType>[] = [
   {
-    field: "uniqueId",
-    label: "Unique Customer Id",
+    field: "customerId",
+    label: "Customer Id",
     type: "text",
   },
   {

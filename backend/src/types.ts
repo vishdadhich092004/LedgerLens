@@ -1,29 +1,30 @@
 export interface InvoiceType {
-  uniqueId: string;
-  customerName: string;
+  invoiceNumber: string;
+  customer: CustomerType;
   products: ProductType[];
   quantity: number;
   amount: number;
   tax: number;
   priceAfterTax: number;
-  date: Date;
+  date: string;
 }
 
 export interface CustomerType {
-  uniqueId: string;
+  customerId: string;
   customerName: string;
   phoneNumber: string;
   totalAmount: number;
 }
 
 export interface ProductType {
-  uniqueId: string;
+  productId: string;
   productName: string;
   quantity: number;
   unitPrice: number;
   tax: number;
   discount: number;
   priceAfterTax: number;
+  priceAfterDiscount: number;
 }
 export interface ResultType {
   success: boolean;

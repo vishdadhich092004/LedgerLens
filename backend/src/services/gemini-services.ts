@@ -14,18 +14,20 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
 {
   "invoices": [
     {
-      "uniqueId": string,
+      "customer": {
       "customerName": string,
+      "phoneNumber": string,
+      "totalAmount": number
+      },
       "products": [
-        {
-          "uniqueId": string,
-          "productName": string,
-          "quantity": number,
-          "unitPrice": number,
-          "tax": number,
-          "discount": number,
-          "priceAfterTax": number
-        }
+      {
+  "productName": string,
+      "quantity": number,
+      "unitPrice": number,
+      "tax": number,
+      "discount": number,
+      "priceAfterTax": number
+      }
       ],
       "quantity": number,
       "amount": number,
@@ -36,7 +38,6 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
   ],
   "products": [
     {
-      "uniqueId": string,
       "productName": string,
       "quantity": number,
       "unitPrice": number,
@@ -47,7 +48,6 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
   ],
   "customers": [
     {
-      "uniqueId": string,
       "customerName": string,
       "phoneNumber": string,
       "totalAmount": number
@@ -58,11 +58,10 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
 Rules to follow:
 - All fields must be present in each object. Use null for missing values.
 - Remove any newlines (\\n) or tabs (\\t) from string values.
-- Generate unique IDs in a consistent format (e.g., "INV-001" for invoices, "PROD-001" for products, "CUST-001" for customers).
 - Ensure all number values are properly formatted as numbers, not strings.
 - Dates should be in ISO format (YYYY-MM-DD).
 - All arrays must be present, even if empty.
-- Ensure products array in invoices contains complete product details.
+- Ensure productIds in invoices correctly reference _id values from products.
 - Calculate priceAfterTax based on amount/unitPrice, tax, and discount where applicable.
 `;
 
