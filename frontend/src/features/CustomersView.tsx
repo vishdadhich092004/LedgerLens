@@ -45,7 +45,7 @@ function CustomersView() {
         customerId,
         changes: {
           ...updatedData,
-          totalAmount: parseInt(updatedData?.totalAmount || 0),
+          // totalAmount: parseInt(updatedData?.totalAmount || 0),
         },
       })
     );
