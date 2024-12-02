@@ -2,15 +2,19 @@ import express, { Request, Response } from "express";
 import multer from "multer";
 import fs from "fs";
 import { processFileWithGemini } from "../services/gemini-services";
+import path from "path";
+import os from "os";
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = "uploads/";
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
-    cb(null, uploadDir);
+    const uploadDir = path.join(os.tmpdir(), "uploads");
+
+    // Use fs.promises to handle async directory creation
+    fs.promises
+      .mkdir(uploadDir, { recursive: true })
+      .then(() => cb(null, uploadDir))
+      .catch((err) => cb(err, uploadDir));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
