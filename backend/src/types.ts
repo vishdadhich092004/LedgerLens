@@ -3,7 +3,7 @@ export interface InvoiceType {
   customer: CustomerType;
   products: ProductType[];
   quantity: number;
-  amount: number;
+  totalAmount: number;
   tax: number;
   priceAfterTax: number;
   date: string;

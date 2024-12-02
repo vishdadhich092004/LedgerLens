@@ -1,35 +1,31 @@
-import { useAppSelector } from "../store/hooks";
+import { useEffect, useState } from "react";
+import { ProductType } from "../types";
+import { useAppSelector } from "../app/hooks";
 
 function ProductsView() {
-  const products = useAppSelector((state) => state.products.items);
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+  const { products, loading } = useAppSelector((state) => state.products);
+  useEffect(() => {
+    setAllProducts(products);
+  }, [products]);
 
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div>
       <h1>Products</h1>
-      {products.map((product) => (
-        <div key={product.productId} className="product-card">
-          <ul>
-            <li>
-              <strong>Product ID:</strong> {product.productId}
-            </li>
-            <li>
-              <strong>Product Name:</strong> {product.productName}
-            </li>
-            <li>
-              <strong>Discount:</strong> {product.discount}%
-            </li>
-            <li>
-              <strong>Tax:</strong> {product.tax}%
-            </li>
-            <li>
-              <strong>Price After Tax:</strong>{" "}
-              {product.priceAfterTax.toFixed(2)}
-            </li>
-            <li>
-              <strong>Quantity:</strong> {product.quantity}
-            </li>
-          </ul>
-        </div>
+      {allProducts.map((product) => (
+        <ul>
+          <li>Product ID : {product.productId}</li>
+          <li>Product Name : {product.productName}</li>
+          <li>Product Qty : {product.quantity}</li>
+          <li>Unit Price : {product.unitPrice}</li>
+          <li>Discount : {product.discount}</li>
+          <li>Price After Discount : {product.priceAfterDiscount}</li>
+          <li>Tax : {product.tax}</li>
+          <li>Price After Tax : {product.priceAfterTax}</li>
+        </ul>
       ))}
     </div>
   );

@@ -1,40 +1,39 @@
-import { useEffect } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../app/hooks";
+import { InvoiceType } from "../types";
 
 function InvoicesView() {
-  const invoices = useAppSelector((state) => state.invoices.items);
+  const [allInvoices, setAllInvoices] = useState<InvoiceType[]>([]);
+  const { invoices, loading } = useAppSelector((state) => state.invoices);
 
   useEffect(() => {
-    console.log("Invoice Updated", invoices);
+    setAllInvoices(invoices);
   }, [invoices]);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div>
       <h1>Invoices</h1>
-      {invoices.map((invoice) => (
-        <div key={invoice.invoiceNumber} className="invoice-card">
-          <ul>
-            <li>
-              <strong>Invoice Number:</strong> {invoice.invoiceNumber}
-            </li>
-            {/* <li>
-              <strong>Amount:</strong> {invoice.amount.toFixed(2)}
-            </li> */}
-            <li>
-              <strong>Customer Name:</strong>{" "}
-              {invoice.customer.customerName || ""}
-            </li>
-            {/* <li>
-              <strong>Price After Tax:</strong>{" "}
-              {invoice.priceAfterTax.toFixed(2)}
-            </li> */}
-            <li>
-              <strong>Quantity:</strong> {invoice.quantity}
-            </li>
-            <li>
-              <strong>Tax:</strong> {invoice.tax}%
-            </li>
-          </ul>
-        </div>
+      {allInvoices.map((invoice) => (
+        <ul>
+          <li>Invoice number : {invoice.invoiceNumber}</li>
+          <li>Invoice Amount : {Number(invoice.totalAmount)}</li>
+          <li>Customer Name : {invoice.customer.customerName}</li>
+          <li>Quantity : {Number(invoice.quantity)}</li>
+          <li>Date : {invoice.date}</li>
+          <li>Tax : {invoice.tax}</li>
+          <li>Price After Tax : {invoice.priceAfterTax}</li>
+          <li>
+            Products
+            <ol>
+              {invoice.products.map((product) => (
+                <li>Product Name : {product.productName}</li>
+              ))}
+            </ol>
+          </li>
+        </ul>
       ))}
     </div>
   );

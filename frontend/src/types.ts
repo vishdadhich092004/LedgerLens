@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface InvoiceType {
   invoiceNumber: string;
   customer: CustomerType;
   products: ProductType[];
   quantity: number;
-  amount: number;
+  totalAmount: number;
   tax: number;
   priceAfterTax: number;
   date: string;
@@ -26,8 +27,8 @@ export interface ProductType {
   priceAfterTax: number;
   priceAfterDiscount: number;
 }
-
 export interface UploadResultType {
+  map(arg0: (result: any) => void): unknown;
   filename: string;
   result?: {
     success: boolean;

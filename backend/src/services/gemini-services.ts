@@ -14,6 +14,7 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
 {
   "invoices": [
     {
+      "invoiceNumber" : "string",
       "customer": {
       "customerName": string,
       "phoneNumber": string,
@@ -21,16 +22,17 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
       },
       "products": [
       {
-  "productName": string,
+      "productName": string,
       "quantity": number,
       "unitPrice": number,
       "tax": number,
       "discount": number,
-      "priceAfterTax": number
+      "priceAfterTax": number,
+      "priceAfterDiscount": "number"
       }
       ],
       "quantity": number,
-      "amount": number,
+      "totalAmount": number,
       "tax": number,
       "priceAfterTax": number,
       "date": string (in ISO format)
@@ -43,7 +45,8 @@ const extractionPrompt = `Analyze the document and provide a JSON output that st
       "unitPrice": number,
       "tax": number,
       "discount": number,
-      "priceAfterTax": number
+      "priceAfterTax": number,
+      "priceAfterDiscount": "number"
     }
   ],
   "customers": [
@@ -61,7 +64,6 @@ Rules to follow:
 - Ensure all number values are properly formatted as numbers, not strings.
 - Dates should be in ISO format (YYYY-MM-DD).
 - All arrays must be present, even if empty.
-- Ensure productIds in invoices correctly reference _id values from products.
 - Calculate priceAfterTax based on amount/unitPrice, tax, and discount where applicable.
 `;
 

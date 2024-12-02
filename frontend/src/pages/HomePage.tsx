@@ -3,9 +3,10 @@ import { Container } from "@mui/material";
 // import TabsSection from "../components/TabsSection";
 // import DummyTable from "../components/DummyTable";
 import FileUploadSectionWithRedux from "../components/FileUploadWithRedux";
-import InvoicesView from "../features/InvoicesView";
-import CustomersView from "../features/CustomersView";
-import ProductsView from "../features/ProductsView";
+// import InvoicesView from "../features/InvoicesView";
+// import CustomersView from "../features/CustomersView";
+// import ProductsView from "../features/ProductsView";
+import DisplaySection from "../components/DisplaySection";
 
 function HomePage() {
   return (
@@ -15,10 +16,11 @@ function HomePage() {
 
       <FileUploadSectionWithRedux />
       {/* Tabs Section */}
+      <DisplaySection />
       {/* <TabsSection /> */}
-      <InvoicesView />
-      <CustomersView />
-      <ProductsView />
+      {/* <InvoicesView /> */}
+      {/* <CustomersView /> */}
+      {/* <ProductsView /> */}
       {/* <DummyTable /> */}
     </Container>
   );
