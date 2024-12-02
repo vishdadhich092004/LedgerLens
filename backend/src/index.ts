@@ -7,7 +7,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.DEPLOYED_URL
+        : process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.get("/", (req, res) => {
   res.send("hi");
 });
