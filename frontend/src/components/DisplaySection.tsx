@@ -44,6 +44,7 @@ function TabbedViews() {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    event.preventDefault();
     setValue(newValue);
   };
 
